@@ -1,66 +1,52 @@
-name: Commit Now
+name: Auto commit
 
 on:
-  workflow_dispatch:
-    inputs:
-      email:
-        description: 'Email'
-        required: true
-        default: 'lexi_anugrah@hotmail.com'
-      username:
-        description: 'Username'
-        required: true
-        default: 'AthanatiusC'
-      commit:
-        description: 'Commit'
-        required: true
-        default: 'Reboisasi'
-      limit:
-        description: 'Limit Commit'
-        required: true
-        default: 20
   push:
     branches:
       - master
+  schedule:
+    - cron: "0 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20 * * *"
 
 jobs:
   auto_commit:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2      
+      - name: DEBUG
+        run: echo "::debug::Ref = ${{github.ref}}"
+      - uses: actions/checkout@v3
         with:
-         persist-credentials: false
-         fetch-depth: 0
+          persist-credentials: false
+          fetch-depth: 0
 
-      - name: DO It
+      - name: Modify last update
         run: |
-          git config --global user.email "lexi_anugrah@hotmail.com"
-          git config --global user.name "AthanatiusC"
-          arr[0]="saatnya menyiram 😁"
-          arr[1]="saatnya menyiram 😱"
-          arr[2]="saatnya menyiram 🏎️"
-          arr[3]="saatnya menyiram 👀"
-          arr[4]="saatnya menyiram 🙏"
-          arr[5]="saatnya menyiram 💦"
-          arr[6]="saatnya menyiram 🐐"
-          arr[7]="saatnya menyiram 🤖"
-          arr[8]="saatnya menyiram ☕"
-          arr[9]="saatnya menyiram 👻"
-          
+          d=`date '+%Y-%m-%dT%H:%M:%SZ'`
+          echo $d > LAST_UPDATED
+
+      - name: Commit changes
+        run: |
+          git config --local user.email lexi_anugrah@hotmail.com"
+          git config --local user.name AthanatiusC"
+          git add -A
+
+          arr[0]="chore(bot): 💪 Stay focus"
+          arr[1]="chore(bot): 😎 Stay motivated"
+          arr[2]="chore(bot): 🤯 Stay learn"
+          arr[3]="chore(bot): 🌟 Stay positive"
+          arr[4]="chore(bot): 👍 Stay good"
+          arr[5]="chore(bot): 🔥 Stay on fire"
+          arr[6]="chore(bot): 💯 Stay awesome"
+          arr[7]="chore(bot): 🌙 Stay cool"
+          arr[8]="chore(bot): 😎 Stay fun"
+          arr[9]="chore(bot): 😍 Stay love"
+
           rand=$[$RANDOM % ${#arr[@]}]
-          
-          for i in {0..${{ github.event.inputs.limit }}}
-          do
-            cat > POHON
-            d=$i+`date '+%Y-%m-%dT%H:%M:%SZ'`
-            echo $d > POHON
-            git add -A
-            git commit -m "${arr[$rand]}"
-          done
-          
+
+          git commit -m "${arr[$rand]}"
+
       - name: GitHub Push
         uses: ad-m/github-push-action@v0.6.0
         with:
           force: true
           directory: "."
-          github_token: ${{ secrets.REBOISASI_HUTAN }}
+          github_token: ${{ github.token }}
