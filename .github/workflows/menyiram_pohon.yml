@@ -31,7 +31,18 @@ jobs:
         with:
          persist-credentials: false
          fetch-depth: 0
-      
+
+      - name: DO It
+        run: |
+          for i in {0..${{ github.event.inputs.limit }}}
+          do
+            cat > POHON
+            d=$i+`date '+%Y-%m-%dT%H:%M:%SZ'`
+            echo $d > POHON
+            git add -A
+            git commit -m "${{ github.event.inputs.commit }}"
+          done
+          
       - name: Set Config
         run: |
           git config --global user.email "lexi_anugrah@hotmail.com"
@@ -53,16 +64,6 @@ jobs:
           
           git commit -m "${arr[$rand]}"
 
-      - name: DO It
-        run: |
-          for i in {0..${{ github.event.inputs.limit }}}
-          do
-            cat > POHON
-            d=$i+`date '+%Y-%m-%dT%H:%M:%SZ'`
-            echo $d > POHON
-            git add -A
-            git commit -m "${{ github.event.inputs.commit }}"
-          done
           
       - name: GitHub Push
         uses: ad-m/github-push-action@v0.6.0
