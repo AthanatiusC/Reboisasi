@@ -36,18 +36,6 @@ jobs:
         run: |
           git config --global user.email "lexi_anugrah@hotmail.com"
           git config --global user.name "AthanatiusC"
-          for i in {0..${{ github.event.inputs.limit }}}
-          do
-            cat > POHON
-            d=$i+`date '+%Y-%m-%dT%H:%M:%SZ'`
-            echo $d > POHON
-            git add -A
-            git commit -m "${{ github.event.inputs.commit }}"
-          git add -A
-          done
-
-      - name: Set Config
-        run: |
           arr[0]="saatnya menyiram 😁"
           arr[1]="saatnya menyiram 😱"
           arr[2]="saatnya menyiram 🏎️"
@@ -61,8 +49,14 @@ jobs:
           
           rand=$[$RANDOM % ${#arr[@]}]
           
-          git commit -m "${arr[$rand]}"
-
+          for i in {0..${{ github.event.inputs.limit }}}
+          do
+            cat > POHON
+            d=$i+`date '+%Y-%m-%dT%H:%M:%SZ'`
+            echo $d > POHON
+            git add -A
+            git commit -m "${arr[$rand]}"
+          done
           
       - name: GitHub Push
         uses: ad-m/github-push-action@v0.6.0
