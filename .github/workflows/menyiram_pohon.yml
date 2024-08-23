@@ -25,8 +25,8 @@ jobs:
 
       - name: Commit changes
         run: |
-          git config --local user.email lexi_anugrah@hotmail.com"
-          git config --local user.name AthanatiusC"
+          git config user.email lexi_anugrah@hotmail.com"
+          git config user.name AthanatiusC"
           git add -A
 
           arr[0]="chore(bot): 💪 Stay focus"
