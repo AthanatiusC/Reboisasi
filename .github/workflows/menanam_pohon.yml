@@ -1,0 +1,55 @@
+name: Auto commit
+
+on:
+
+  push:
+    branches:
+      - main
+      
+  schedule:
+  - cron: "0 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20 * * *" # See https://crontab.guru/#0_7,9,11,17,20_*_*_*
+
+jobs:
+  auto_commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2      
+        with:
+         persist-credentials: false
+         fetch-depth: 0
+
+      - name: Modify last update
+        run: |
+          d=`date '+%Y-%m-%dT%H:%M:%SZ'`
+          echo $d > POHON
+          
+      - name: Commit changes
+        run: |
+          set -o pipefail
+          git config --global --add safe.directory /github/workspace
+          git config --global user.email "lexi_anugrah@hotmail.com"
+          git config --global user.name "AthanatiusC"
+          git config --global --add safe.directory /github/workspace
+          git add -A
+          
+          arr[0]="saatnya menyiram 😁"
+          arr[1]="saatnya menyiram 😱"
+          arr[2]="saatnya menyiram 🏎️"
+          arr[3]="saatnya menyiram 👀"
+          arr[4]="saatnya menyiram 🙏"
+          arr[5]="saatnya menyiram 💦"
+          arr[6]="saatnya menyiram 🐐"
+          arr[7]="saatnya menyiram 🤖"
+          arr[8]="saatnya menyiram ☕"
+          arr[9]="saatnya menyiram 👻"
+          
+          rand=$[$RANDOM % ${#arr[@]}]
+          
+          git commit -m "${arr[$rand]}"
+          
+      - name: GitHub Push
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          force: true
+          directory: "."
+          github_token: ${{ secrets.REBOISASI_HUTAN }}
