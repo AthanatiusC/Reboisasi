@@ -34,6 +34,8 @@ jobs:
 
       - name: DO It
         run: |
+          git config --global user.email "lexi_anugrah@hotmail.com"
+          git config --global user.name "AthanatiusC"
           for i in {0..${{ github.event.inputs.limit }}}
           do
             cat > POHON
@@ -41,14 +43,11 @@ jobs:
             echo $d > POHON
             git add -A
             git commit -m "${{ github.event.inputs.commit }}"
+          git add -A
           done
-          
+
       - name: Set Config
         run: |
-          git config --global user.email "lexi_anugrah@hotmail.com"
-          git config --global user.name "AthanatiusC"
-          git add -A
-          
           arr[0]="saatnya menyiram 😁"
           arr[1]="saatnya menyiram 😱"
           arr[2]="saatnya menyiram 🏎️"
